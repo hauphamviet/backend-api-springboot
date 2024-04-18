@@ -1,6 +1,5 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.controller;
 
-import com.thuctaptotnghiem.thuctaptotnghiep.entity.UserEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.exception.UserAlreadyExistsException;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.LoginRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.RegisterRequest;
@@ -18,7 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

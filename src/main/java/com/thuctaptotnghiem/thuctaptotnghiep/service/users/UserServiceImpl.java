@@ -1,11 +1,14 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.service.users;
 
+import com.thuctaptotnghiem.thuctaptotnghiep.common.Constants;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.RoleEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.UserEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.RoleEnum;
+import com.thuctaptotnghiem.thuctaptotnghiep.exception.NotFoundException;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.RegisterRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.repository.RoleRepository;
 import com.thuctaptotnghiem.thuctaptotnghiep.repository.UserRepository;
+import com.thuctaptotnghiem.thuctaptotnghiep.service.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -61,5 +64,11 @@ public class UserServiceImpl implements UserService {
         }
         userEntity.setRoles(roles);
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public UserEntity getUserById(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(Constants.USER_ID_NOT_EXIST, id)));
     }
 }
