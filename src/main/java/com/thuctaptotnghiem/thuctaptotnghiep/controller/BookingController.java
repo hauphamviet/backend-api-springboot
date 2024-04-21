@@ -1,11 +1,8 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.controller;
 
-import com.thuctaptotnghiem.thuctaptotnghiep.common.Constants;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
-import com.thuctaptotnghiem.thuctaptotnghiep.exception.NotFoundException;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.response.BookingResponse;
-import com.thuctaptotnghiem.thuctaptotnghiep.repository.UserRepository;
 import com.thuctaptotnghiem.thuctaptotnghiep.service.bookings.BookingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +26,14 @@ public class BookingController {
         return bookingService.getAllBookings();
     }
 
-    @GetMapping("/{id}")
-    public BookingEntity getBookingById(@PathVariable Long bookingId) {
+    @GetMapping("/{bookingId}")
+    public BookingEntity getBookingById(@PathVariable long bookingId) {
         return bookingService.getBookingById(bookingId);
+    }
+
+    @GetMapping("/userId/{userId}")
+    public List<BookingEntity> findBookingByUserId(@PathVariable long userId) {
+        return bookingService.findBookingByUserId(userId);
     }
 
     @PostMapping("/create")
@@ -39,4 +41,17 @@ public class BookingController {
                                          @ModelAttribute BookingRequest bookingRequest) throws SQLException, IOException {
         return bookingService.saveBooking(file, bookingRequest);
     }
+
+    @PutMapping("/update/{bookingId}")
+    public BookingEntity updateBooking(@PathVariable long bookingId,
+                                       @ModelAttribute BookingRequest bookingRequest,
+                                       @RequestParam MultipartFile file) {
+        return bookingService.updateBooking(bookingId, bookingRequest, file);
+    }
+
+    @DeleteMapping("/{bookingId}")
+    public void cancelBooking(@PathVariable long bookingId) {
+        bookingService.cancelBooking(bookingId);
+    }
+
 }

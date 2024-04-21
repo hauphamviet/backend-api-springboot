@@ -6,16 +6,21 @@ import com.thuctaptotnghiem.thuctaptotnghiep.entity.UserEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.RoleEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.exception.NotFoundException;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.RegisterRequest;
+import com.thuctaptotnghiem.thuctaptotnghiep.model.request.UserRequest;
+import com.thuctaptotnghiem.thuctaptotnghiep.model.response.UserResponse;
 import com.thuctaptotnghiem.thuctaptotnghiep.repository.RoleRepository;
 import com.thuctaptotnghiem.thuctaptotnghiep.repository.UserRepository;
-import com.thuctaptotnghiem.thuctaptotnghiep.service.users.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -67,8 +72,72 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getUserById(long id) {
+    public UserEntity getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(Constants.USER_ID_NOT_EXIST, id)));
+    }
+
+    @Override
+    public List<UserResponse> getAllUsers() {
+        var usersList = userRepository.findAll();
+        return usersList.stream().map(this::mapToUserResponse).toList();
+    }
+
+    private UserResponse mapToUserResponse(UserEntity userEntity) {
+        return UserResponse.builder()
+                .id(userEntity.getId())
+                .username(userEntity.getUsername())
+                .firstName(userEntity.getFirstName())
+                .lastName(userEntity.getLastName())
+                .email(userEntity.getEmail())
+                .address(userEntity.getAddress())
+                .phone(userEntity.getPhone())
+                .citizen_id(userEntity.getCitizen_id())
+                .bookings(userEntity.getBookings())
+                .roles(userEntity.getRoles())
+                .build();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(Constants.USER_ID_NOT_EXIST, id)));
+    }
+
+    @Override
+    public UserEntity getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(String.format(Constants.USER_EMAIL_NOT_EXIST, email)));
+    }
+
+    @Override
+    public UserEntity getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(String.format(Constants.USER_NAME_NOT_EXIST, username)));
+    }
+
+    @Override
+    public UserEntity updateUser(Long id, UserRequest userRequest) {
+        var userTemp = userRepository.findById(id)
+                .map(userEntity -> buildUsersEntity(userEntity, userRequest))
+                .orElse(null);
+
+        if (Objects.isNull(userTemp)) {
+            log.error("error update user id = {}", id);
+            return null;
+        }
+        return userRepository.save(userTemp);
+    }
+
+    private UserEntity buildUsersEntity(UserEntity userEntity, UserRequest userRequest) {
+        userEntity.setUsername(userRequest.getUsername());
+        userEntity.setFirstName(userRequest.getFirstName());
+        userEntity.setLastName(userRequest.getLastName());
+        userEntity.setEmail(userRequest.getEmail());
+        userEntity.setAddress(userRequest.getAddress());
+        userEntity.setPhone(userRequest.getPhone());
+        userEntity.setCitizen_id(userRequest.getCitizen_id());
+
+        return userEntity;
     }
 }

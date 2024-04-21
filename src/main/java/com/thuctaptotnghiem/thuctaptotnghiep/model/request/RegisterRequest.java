@@ -48,7 +48,6 @@ public class RegisterRequest {
     private String phone;
 
     @NotNull(message = "Citizen_id is required")
-    //@Size(max = 20)
     private long citizen_id;
 
     private Set<String> role;

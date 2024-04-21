@@ -1,5 +1,6 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.entity;
 
+import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.LocationEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.TimeEnum;
 import jakarta.persistence.*;
@@ -13,8 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "bookings")
-@Builder
-public class BookingEntity {
+public class BookingEntity extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +24,19 @@ public class BookingEntity {
     private LocalDate bookingDate;
 
     @Column(name = "booking_time")
+    @Enumerated(EnumType.STRING)
     private TimeEnum bookingTime;
 
     @Column(name = "location")
+    @Enumerated(EnumType.STRING)
     private LocationEnum location;
 
     @Column(name = "color")
     private String color;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private BookingStatusEnum status;
 
     @Lob
     @Column(name = "image")

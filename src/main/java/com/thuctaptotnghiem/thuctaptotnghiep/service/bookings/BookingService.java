@@ -15,9 +15,11 @@ public interface BookingService {
 
     BookingEntity getBookingById(long bookingId);
 
-    void cancelBooking(Long bookingId);
+    void cancelBooking(long bookingId);
 
-    BookingEntity findByBookingUserId(Long userId);
+    List<BookingEntity> findBookingByUserId(long userId);
+
+    BookingEntity updateBooking(long bookingId, BookingRequest bookingRequest, MultipartFile file);
 
     BookingEntity saveBooking(MultipartFile file, BookingRequest bookingRequest) throws SQLException, IOException;
 
