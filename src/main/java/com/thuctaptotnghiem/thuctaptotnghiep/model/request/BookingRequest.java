@@ -1,5 +1,6 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.model.request;
 
+import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.LocationEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.TimeEnum;
 import lombok.*;
@@ -20,6 +21,8 @@ public class BookingRequest {
     private LocationEnum location;
 
     private String color;
+
+    private BookingStatusEnum status;
 
     private String image;
 

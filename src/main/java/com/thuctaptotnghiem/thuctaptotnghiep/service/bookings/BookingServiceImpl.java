@@ -2,6 +2,7 @@ package com.thuctaptotnghiem.thuctaptotnghiep.service.bookings;
 
 import com.thuctaptotnghiem.thuctaptotnghiep.common.Constants;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
+import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.exception.NotFoundException;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.response.BookingResponse;
@@ -48,6 +49,7 @@ public class BookingServiceImpl implements BookingService {
                 .bookingTime(bookingEntity.getBookingTime())
                 .location(bookingEntity.getLocation())
                 .color(bookingEntity.getColor())
+                .status(bookingEntity.getStatus())
                 .image(bookingEntity.getImage())
                 .licensePlate(bookingEntity.getLicensePlate())
                 .brand(bookingEntity.getBrand())
@@ -116,6 +118,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setBookingTime(bookingRequest.getBookingTime());
         booking.setLocation(bookingRequest.getLocation());
         booking.setColor(bookingRequest.getColor());
+        booking.setStatus(BookingStatusEnum.Pending);
         booking.setLicensePlate(bookingRequest.getLicensePlate());
         booking.setBrand(bookingRequest.getBrand());
 

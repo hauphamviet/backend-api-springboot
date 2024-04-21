@@ -1,6 +1,7 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.model.response;
 
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.UserEntity;
+import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.LocationEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.TimeEnum;
 import lombok.*;
@@ -24,6 +25,8 @@ public class BookingResponse {
     private LocationEnum location;
 
     private String color;
+
+    private BookingStatusEnum status;
 
     private String image;
 
