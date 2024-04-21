@@ -97,6 +97,7 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setColor(bookingRequest.getColor());
         bookingEntity.setLicensePlate(bookingRequest.getLicensePlate());
         bookingEntity.setBrand(bookingRequest.getBrand());
+        bookingEntity.setStatus(bookingRequest.getStatus());
 
         String originalFilename = file.getOriginalFilename();
         Path fileNameAndPath = Paths.get(UPLOAD_DIR, originalFilename);
