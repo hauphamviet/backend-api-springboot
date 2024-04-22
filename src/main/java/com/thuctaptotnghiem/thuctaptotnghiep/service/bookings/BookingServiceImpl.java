@@ -3,6 +3,7 @@ package com.thuctaptotnghiem.thuctaptotnghiep.service.bookings;
 import com.thuctaptotnghiem.thuctaptotnghiep.common.Constants;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
+import com.thuctaptotnghiem.thuctaptotnghiep.exception.BookingLimitExceededException;
 import com.thuctaptotnghiem.thuctaptotnghiep.exception.NotFoundException;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.response.BookingResponse;
@@ -18,6 +19,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -113,6 +115,13 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingEntity saveBooking(MultipartFile file, BookingRequest bookingRequest) throws IOException {
+//        LocalDateTime bookingTime = LocalDateTime.parse(bookingRequest.getBookingDate() + "T" + bookingRequest.getBookingTime());
+//
+//        if (isBookingLimitReached(bookingTime)) {
+//            // Nếu giới hạn đã đạt, bạn có thể xử lý thông báo hoặc đề xuất khoảng thời gian khác
+//            throw new BookingLimitExceededException("Booking limit for this hour has been reached. Please choose another time.");
+//        }
+
         var booking = new BookingEntity();
 
         booking.setBookingDate(bookingRequest.getBookingDate());
@@ -135,5 +144,17 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.save(booking);
 
     }
+
+//    @Override
+//    public boolean isBookingLimitReached(LocalDateTime bookingTime) {
+//        // tinh toan khoang thoi gian 1 tieng
+//        LocalDateTime endTime = bookingTime.plusHours(1);
+//
+//        // Lay ds cac booking trong khoang thoi gian do
+//        List<BookingEntity> bookingsWithinHour = bookingRepository.findByBookingTimeBetween(bookingTime, endTime);
+//
+//        // Verify so luong booking
+//        return bookingsWithinHour.size() >= 5;
+//    }
 
 }

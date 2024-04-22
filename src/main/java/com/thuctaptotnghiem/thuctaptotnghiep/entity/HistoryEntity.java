@@ -25,8 +25,8 @@ public class HistoryEntity extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private HistoryStatusEnum status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "booking_id")
-    private BookingEntity booking;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "bookings_id")
+    private BookingEntity bookings;
 
 }
