@@ -32,10 +32,8 @@ public class BookingRequest {
     @NotEmpty(message = "Color must not be null")
     private String color;
 
-    @NotNull(message = "Status must not be null")
     private BookingStatusEnum status;
 
-    @NotEmpty(message = "Image must not be null")
     private String image;
 
     @NotEmpty(message = "License plate must not be null")

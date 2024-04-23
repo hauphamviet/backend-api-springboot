@@ -1,5 +1,6 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.RoleEntity;
 import lombok.*;
@@ -29,8 +30,9 @@ public class UserResponse {
 
     private String phone;
 
-    private long citizen_id;
+    private String citizen_id;
 
+    @JsonIgnore
     private List<BookingEntity> bookings;
 
     private Collection<RoleEntity> roles = new HashSet<>();

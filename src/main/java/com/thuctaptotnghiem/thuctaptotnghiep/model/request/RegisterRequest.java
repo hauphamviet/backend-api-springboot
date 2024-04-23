@@ -1,10 +1,7 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.model.request;
 
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.RoleEnum;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,8 +45,8 @@ public class RegisterRequest {
     private String phone;
 
     @NotNull(message = "Citizen_id is required")
-    @Size(min = 12, max = 12, message = "Citizen ID must be exactly 12 digits")
-    private long citizen_id;
+    @Pattern(regexp = "\\d{12}", message = "Citizen ID must be exactly 12 digits")
+    private String citizen_id;
 
     private Set<String> role;
 

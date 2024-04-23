@@ -46,13 +46,11 @@ public class UserEntity {
     private String phone;
 
     @Column(name = "citizen_id", length = 20, unique = true)
-    private long citizen_id;
+    private String citizen_id;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<BookingEntity> bookings;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<RoleEntity> roles = new HashSet<>();
