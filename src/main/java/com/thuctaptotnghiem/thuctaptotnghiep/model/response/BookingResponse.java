@@ -38,7 +38,6 @@ public class BookingResponse {
 
     private long totalPrice;
 
-    @JsonIgnore
     private UserEntity users;
 
     private Set<BookingDetailEntity> bookingDetails;

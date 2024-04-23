@@ -6,6 +6,7 @@ import com.thuctaptotnghiem.thuctaptotnghiep.model.response.BookingResponse;
 import com.thuctaptotnghiem.thuctaptotnghiep.service.bookings.BookingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,16 +38,18 @@ public class BookingController {
     }
 
     @PostMapping("/create")
-    public void createBookings(@RequestParam("file") MultipartFile file,
-                               @ModelAttribute @Valid BookingRequest bookingRequest) throws SQLException, IOException {
+    public ResponseEntity<String> createBookings(@RequestParam("file") MultipartFile file,
+                                         @ModelAttribute @Valid BookingRequest bookingRequest) throws SQLException, IOException {
         bookingService.saveBooking(file, bookingRequest);
+        return ResponseEntity.ok().body("Booking created successfully");
     }
 
     @PutMapping("/update/{bookingId}")
-    public BookingEntity updateBooking(@PathVariable long bookingId,
-                                       @ModelAttribute @Valid BookingRequest bookingRequest,
-                                       @RequestParam MultipartFile file) {
-        return bookingService.updateBooking(bookingId, bookingRequest, file);
+    public ResponseEntity<BookingEntity> updateBooking(@PathVariable long bookingId,
+                                                       @ModelAttribute @Valid BookingRequest bookingRequest,
+                                                       @RequestParam MultipartFile file) {
+        BookingEntity updatedBooking = bookingService.updateBooking(bookingId, bookingRequest, file);
+        return ResponseEntity.ok().body(updatedBooking);
     }
 
     @DeleteMapping("/{bookingId}")

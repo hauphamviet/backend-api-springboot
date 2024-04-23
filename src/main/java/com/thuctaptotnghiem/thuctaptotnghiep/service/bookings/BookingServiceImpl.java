@@ -168,7 +168,7 @@ public class BookingServiceImpl implements BookingService {
             for (BookingDetailRequest rq : bookingDetails) {
                 var bookingDetail = new BookingDetailEntity();
                 bookingDetail.setQuantity(rq.getQuantity());
-                bookingDetail.setPrice(rq.getPrice());
+                bookingDetail.setPrice(350);
                 bookingDetail.setSubTotal(rq.getPrice() * rq.getQuantity());
                 bookingDetail.setBooking(bookingEntity);
                 totalPrice += bookingDetail.getSubTotal();

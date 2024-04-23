@@ -1,6 +1,7 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.LocationEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.TimeEnum;
@@ -53,10 +54,12 @@ public class BookingEntity {
     @Column(name = "total_price")
     private Long totalPrice;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "users_id")
     private UserEntity users;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "booking")
     @JsonBackReference
     private Set<BookingDetailEntity> bookingDetails;
