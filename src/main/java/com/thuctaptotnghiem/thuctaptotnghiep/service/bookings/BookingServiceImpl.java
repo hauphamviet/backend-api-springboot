@@ -121,6 +121,23 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new NotFoundException(Constants.USER_ID_NOT_EXIST));
         bookingEntity.setUsers(userEntity);
 
+        long totalPrice = 0;
+        List<BookingDetailRequest> bookingDetails = bookingRequest.getBookingDetails();
+        if (bookingDetails != null) {
+            for (BookingDetailRequest rq : bookingDetails) {
+                var bookingDetail = new BookingDetailEntity();
+                bookingDetail.setQuantity(rq.getQuantity());
+                bookingDetail.setPrice(rq.getPrice());
+                bookingDetail.setSubTotal(rq.getPrice() * rq.getQuantity());
+                bookingDetail.setBooking(bookingEntity);
+                totalPrice += bookingDetail.getSubTotal();
+                bookingDetailRepository.save(bookingDetail);
+            }
+        }
+
+        bookingEntity.setTotalPrice(totalPrice);
+        bookingEntity.setUsers(userEntity);
+
         return bookingEntity;
     }
 
@@ -164,7 +181,5 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.save(bookingEntity);
 
     }
-
-
 
 }
