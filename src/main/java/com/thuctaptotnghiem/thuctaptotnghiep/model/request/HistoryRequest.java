@@ -1,8 +1,7 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.model.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.HistoryStatusEnum;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,6 +17,7 @@ public class HistoryRequest {
 
     private HistoryStatusEnum status;
 
+    @Positive(message = "Number of bookings must be positive")
     private long bookings;
 
 }

@@ -30,14 +30,13 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
-    private final UserDetailsServiceImpl userDetailsService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid RegisterRequest registerRequest) {
         try {
             userService.registerUser(registerRequest);
             return ResponseEntity.ok("Registration successful!");
-        }catch (UserAlreadyExistsException e) {
+        } catch (UserAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }

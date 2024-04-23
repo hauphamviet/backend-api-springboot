@@ -19,7 +19,7 @@ import java.util.Objects;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class HistoryServiceImpl implements HistoryService{
+public class HistoryServiceImpl implements HistoryService {
 
     private final HistoryRepository historyRepository;
     private final BookingRepository bookingRepository;
@@ -47,7 +47,7 @@ public class HistoryServiceImpl implements HistoryService{
 
     @Override
     public HistoryEntity saveHistory(HistoryRequest historyRequest) {
-       var historyEntity = new HistoryEntity();
+        var historyEntity = new HistoryEntity();
 
         historyEntity.setHistoryDate(historyRequest.getHistoryDate());
         historyEntity.setStatus(HistoryStatusEnum.Pending);

@@ -38,6 +38,7 @@ public class UserRequest {
     private String phone;
 
     @NotNull(message = "Citizen_id is required")
+    @Size(min = 12, max = 12, message = "Citizen ID must be exactly 12 digits")
     private long citizen_id;
 
 }
