@@ -1,12 +1,14 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.service.bookings;
 
 import com.thuctaptotnghiem.thuctaptotnghiep.common.Constants;
+import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingDetailEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
-import com.thuctaptotnghiem.thuctaptotnghiep.exception.BookingLimitExceededException;
 import com.thuctaptotnghiem.thuctaptotnghiep.exception.NotFoundException;
+import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingDetailRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.response.BookingResponse;
+import com.thuctaptotnghiem.thuctaptotnghiep.repository.BookingDetailRepository;
 import com.thuctaptotnghiem.thuctaptotnghiep.repository.BookingRepository;
 import com.thuctaptotnghiem.thuctaptotnghiep.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +31,8 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+    private final BookingDetailRepository bookingDetailRepository;
+
     private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/src/main/resources/static/photos/";
 
     @Override
@@ -55,6 +58,8 @@ public class BookingServiceImpl implements BookingService {
                 .image(bookingEntity.getImage())
                 .licensePlate(bookingEntity.getLicensePlate())
                 .brand(bookingEntity.getBrand())
+                .totalPrice(bookingEntity.getTotalPrice())
+                .bookingDetails(bookingEntity.getBookingDetails())
                 .users(bookingEntity.getUsers())
                 .build();
     }
@@ -63,6 +68,12 @@ public class BookingServiceImpl implements BookingService {
     public void cancelBooking(long bookingId) {
         var bookingEntity = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException(String.format(Constants.BOOKING_ID_NOT_EXIST, bookingId)));
+
+        if (bookingEntity.getUsers() != null) {
+            bookingEntity.setUsers(null);
+            bookingRepository.save(bookingEntity);
+        }
+
         bookingRepository.delete(bookingEntity);
     }
 
@@ -106,7 +117,7 @@ public class BookingServiceImpl implements BookingService {
         Files.write(fileNameAndPath, file.getBytes());
         bookingEntity.setImage(originalFilename);
 
-        var userEntity = userRepository.findById(bookingRequest.getUsers())
+        var userEntity = userRepository.findById(bookingRequest.getUserId())
                 .orElseThrow(() -> new NotFoundException(Constants.USER_ID_NOT_EXIST));
         bookingEntity.setUsers(userEntity);
 
@@ -114,47 +125,46 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingEntity saveBooking(MultipartFile file, BookingRequest bookingRequest) throws IOException {
-//        LocalDateTime bookingTime = LocalDateTime.parse(bookingRequest.getBookingDate() + "T" + bookingRequest.getBookingTime());
-//
-//        if (isBookingLimitReached(bookingTime)) {
-//            // Nếu giới hạn đã đạt, bạn có thể xử lý thông báo hoặc đề xuất khoảng thời gian khác
-//            throw new BookingLimitExceededException("Booking limit for this hour has been reached. Please choose another time.");
-//        }
+    public void saveBooking(MultipartFile file, BookingRequest bookingRequest) throws IOException {
+        var bookingEntity = new BookingEntity();
+        var userEntity = userRepository.findById(bookingRequest.getUserId())
+                .orElseThrow(() -> new NotFoundException(Constants.USER_ID_NOT_EXIST));
 
-        var booking = new BookingEntity();
-
-        booking.setBookingDate(bookingRequest.getBookingDate());
-        booking.setBookingTime(bookingRequest.getBookingTime());
-        booking.setLocation(bookingRequest.getLocation());
-        booking.setColor(bookingRequest.getColor());
-        booking.setStatus(BookingStatusEnum.Pending);
-        booking.setLicensePlate(bookingRequest.getLicensePlate());
-        booking.setBrand(bookingRequest.getBrand());
+        bookingEntity.setBookingDate(bookingRequest.getBookingDate());
+        bookingEntity.setBookingTime(bookingRequest.getBookingTime());
+        bookingEntity.setLocation(bookingRequest.getLocation());
+        bookingEntity.setColor(bookingRequest.getColor());
+        bookingEntity.setStatus(BookingStatusEnum.Pending);
+        bookingEntity.setLicensePlate(bookingRequest.getLicensePlate());
+        bookingEntity.setBrand(bookingRequest.getBrand());
 
         String originalFilename = file.getOriginalFilename();
         Path fileNameAndPath = Paths.get(UPLOAD_DIR, originalFilename);
         Files.write(fileNameAndPath, file.getBytes());
-        booking.setImage(originalFilename);
+        bookingEntity.setImage(originalFilename);
 
-        var userEntity = userRepository.findById(bookingRequest.getUsers())
-                .orElseThrow(() -> new NotFoundException(Constants.USER_ID_NOT_EXIST));
-        booking.setUsers(userEntity);
+        bookingRepository.save(bookingEntity);
 
-        return bookingRepository.save(booking);
+        long totalPrice = 0;
+        List<BookingDetailRequest> bookingDetails = bookingRequest.getBookingDetails();
+        if (bookingDetails != null) {
+            for (BookingDetailRequest rq : bookingDetails) {
+                var bookingDetail = new BookingDetailEntity();
+                bookingDetail.setQuantity(rq.getQuantity());
+                bookingDetail.setPrice(rq.getPrice());
+                bookingDetail.setSubTotal(rq.getPrice() * rq.getQuantity());
+                bookingDetail.setBooking(bookingEntity);
+                totalPrice += bookingDetail.getSubTotal();
+                bookingDetailRepository.save(bookingDetail);
+            }
+        }
+
+        bookingEntity.setTotalPrice(totalPrice);
+        bookingEntity.setUsers(userEntity);
+        bookingRepository.save(bookingEntity);
 
     }
 
-//    @Override
-//    public boolean isBookingLimitReached(LocalDateTime bookingTime) {
-//        // tinh toan khoang thoi gian 1 tieng
-//        LocalDateTime endTime = bookingTime.plusHours(1);
-//
-//        // Lay ds cac booking trong khoang thoi gian do
-//        List<BookingEntity> bookingsWithinHour = bookingRepository.findByBookingTimeBetween(bookingTime, endTime);
-//
-//        // Verify so luong booking
-//        return bookingsWithinHour.size() >= 5;
-//    }
+
 
 }

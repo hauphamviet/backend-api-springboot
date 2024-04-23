@@ -1,5 +1,6 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +23,12 @@ public class BookingDetailEntity extends BaseEntity{
     private int quantity;
 
     @Column(name = "price")
-    private double price;
+    private long price;
 
+    @Column(name = "sub_total")
+    private long subTotal;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "booking_id")
     private BookingEntity booking;

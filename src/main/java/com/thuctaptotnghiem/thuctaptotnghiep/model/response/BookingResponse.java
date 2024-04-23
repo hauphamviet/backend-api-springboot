@@ -1,13 +1,15 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingDetailEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.UserEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.LocationEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.TimeEnum;
 import lombok.*;
 
-import java.sql.Blob;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,6 +36,11 @@ public class BookingResponse {
 
     private String brand;
 
+    private long totalPrice;
+
+    @JsonIgnore
     private UserEntity users;
+
+    private Set<BookingDetailEntity> bookingDetails;
 
 }

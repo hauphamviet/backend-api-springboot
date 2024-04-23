@@ -37,9 +37,9 @@ public class BookingController {
     }
 
     @PostMapping("/create")
-    public BookingEntity createBookings(@RequestParam("file") MultipartFile file,
-                                         @ModelAttribute BookingRequest bookingRequest) throws SQLException, IOException {
-        return bookingService.saveBooking(file, bookingRequest);
+    public void createBookings(@RequestParam("file") MultipartFile file,
+                               @ModelAttribute BookingRequest bookingRequest) throws SQLException, IOException {
+        bookingService.saveBooking(file, bookingRequest);
     }
 
     @PutMapping("/update/{bookingId}")

@@ -14,6 +14,4 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
     @Query(value = "select * from bookings where users_id = ?1", nativeQuery = true)
     List<BookingEntity> findBookingByUserId(Long userId);
 
-    //List<BookingEntity> findByBookingTimeBetween(LocalDateTime startTime, LocalDateTime endTime);
-
 }

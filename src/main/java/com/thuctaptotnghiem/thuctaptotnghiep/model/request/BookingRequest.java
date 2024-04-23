@@ -6,6 +6,7 @@ import com.thuctaptotnghiem.thuctaptotnghiep.enums.TimeEnum;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,6 +31,10 @@ public class BookingRequest {
 
     private String brand;
 
-    private long users;
+    private long totalPrice;
+
+    private long userId;
+
+    private List<BookingDetailRequest> bookingDetails;
 
 }

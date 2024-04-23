@@ -1,5 +1,7 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.LocationEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.TimeEnum;
@@ -7,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -48,8 +51,15 @@ public class BookingEntity {
     @Column(name = "brand")
     private String brand;
 
+    @Column(name = "total_price")
+    private Long totalPrice;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "users_id")
     private UserEntity users;
+
+    @OneToMany(mappedBy = "booking")
+    @JsonBackReference
+    private Set<BookingDetailEntity> bookingDetails;
 
 }

@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingService {
@@ -22,8 +21,10 @@ public interface BookingService {
 
     BookingEntity updateBooking(long bookingId, BookingRequest bookingRequest, MultipartFile file);
 
-    BookingEntity saveBooking(MultipartFile file, BookingRequest bookingRequest) throws SQLException, IOException;
+    void saveBooking(MultipartFile file, BookingRequest bookingRequest) throws SQLException, IOException;
 
 //    boolean isBookingLimitReached(LocalDateTime bookingTime);
+
+
 
 }
