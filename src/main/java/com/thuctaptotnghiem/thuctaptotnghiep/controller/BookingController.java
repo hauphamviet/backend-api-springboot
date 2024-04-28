@@ -1,6 +1,7 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.controller;
 
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
+import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.response.BookingResponse;
 import com.thuctaptotnghiem.thuctaptotnghiep.service.bookings.BookingService;
@@ -50,6 +51,12 @@ public class BookingController {
                                                        @RequestParam MultipartFile file) {
         BookingEntity updatedBooking = bookingService.updateBooking(bookingId, bookingRequest, file);
         return ResponseEntity.ok().body(updatedBooking);
+    }
+
+    @PutMapping("/update-status/{bookingId}")
+    public BookingEntity updateStatus(@PathVariable long bookingId,
+                                      BookingStatusEnum status) {
+        return bookingService.updateStatus(bookingId, status);
     }
 
     @DeleteMapping("/{bookingId}")

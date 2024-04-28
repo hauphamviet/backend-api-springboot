@@ -1,6 +1,7 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.service.bookings;
 
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
+import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.response.BookingResponse;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,8 @@ public interface BookingService {
     List<BookingEntity> findBookingByUserId(long userId);
 
     BookingEntity updateBooking(long bookingId, BookingRequest bookingRequest, MultipartFile file);
+
+    BookingEntity updateStatus(long bookingId, BookingStatusEnum status);
 
     void saveBooking(MultipartFile file, BookingRequest bookingRequest) throws SQLException, IOException;
 

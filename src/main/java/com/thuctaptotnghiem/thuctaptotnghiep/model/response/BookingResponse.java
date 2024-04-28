@@ -2,6 +2,7 @@ package com.thuctaptotnghiem.thuctaptotnghiep.model.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingDetailEntity;
+import com.thuctaptotnghiem.thuctaptotnghiep.entity.HistoryEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.UserEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.LocationEnum;
@@ -38,7 +39,10 @@ public class BookingResponse {
 
     private long totalPrice;
 
+    @JsonIgnore
     private UserEntity users;
+
+    private Set<HistoryEntity> histories;
 
     private Set<BookingDetailEntity> bookingDetails;
 

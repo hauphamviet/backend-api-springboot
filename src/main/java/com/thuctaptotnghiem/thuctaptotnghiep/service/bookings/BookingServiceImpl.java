@@ -61,6 +61,7 @@ public class BookingServiceImpl implements BookingService {
                 .totalPrice(bookingEntity.getTotalPrice())
                 .bookingDetails(bookingEntity.getBookingDetails())
                 .users(bookingEntity.getUsers())
+                .histories(bookingEntity.getHistoryEntities())
                 .build();
     }
 
@@ -103,6 +104,14 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.save(bookingTemp);
     }
 
+    @Override
+    public BookingEntity updateStatus(long bookingId, BookingStatusEnum status) {
+        var bookingEntity = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException(String.format(Constants.BOOKING_ID_NOT_EXIST, bookingId)));
+        bookingEntity.setStatus(status);
+        return bookingRepository.save(bookingEntity);
+    }
+
     private BookingEntity buildBookingEntity(BookingEntity bookingEntity, BookingRequest bookingRequest, MultipartFile file) throws IOException {
         bookingEntity.setBookingDate(bookingRequest.getBookingDate());
         bookingEntity.setBookingTime(bookingRequest.getBookingTime());
@@ -127,7 +136,7 @@ public class BookingServiceImpl implements BookingService {
             for (BookingDetailRequest rq : bookingDetails) {
                 var bookingDetail = new BookingDetailEntity();
                 bookingDetail.setQuantity(rq.getQuantity());
-                bookingDetail.setPrice(rq.getPrice());
+                bookingDetail.setPrice(350);
                 bookingDetail.setSubTotal(rq.getPrice() * rq.getQuantity());
                 bookingDetail.setBooking(bookingEntity);
                 totalPrice += bookingDetail.getSubTotal();

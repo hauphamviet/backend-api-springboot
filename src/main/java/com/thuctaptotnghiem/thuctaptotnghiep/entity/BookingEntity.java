@@ -64,4 +64,8 @@ public class BookingEntity {
     @JsonBackReference
     private Set<BookingDetailEntity> bookingDetails;
 
+    @OneToMany(mappedBy = "bookings")
+    @JsonBackReference
+    private Set<HistoryEntity> historyEntities;
+
 }
