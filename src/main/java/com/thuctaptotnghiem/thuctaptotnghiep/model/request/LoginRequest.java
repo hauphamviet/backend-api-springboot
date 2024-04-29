@@ -17,8 +17,9 @@ public class LoginRequest {
 
     @NotNull(message = "Email is required")
     @NotEmpty(message="Username rỗng")
-    @Email(message = "Email is invalid")
-    private String email;
+//    @Email(message = "Email is invalid")
+//    private String email;
+    private String citizen_id;
 
     @NotNull(message = "Mật khẩu rỗng")
     @NotEmpty(message = "Mật khẩu rỗng")

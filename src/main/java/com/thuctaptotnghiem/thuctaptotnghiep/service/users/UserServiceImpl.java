@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setUsername(registerRequest.getUsername());
         userEntity.setEmail(registerRequest.getEmail());
         userEntity.setAddress(registerRequest.getAddress());
-        userEntity.setCitizen_id(registerRequest.getCitizen_id());
+        userEntity.setCitizenId(registerRequest.getCitizen_id());
         userEntity.setFirstName(registerRequest.getFirstName());
         userEntity.setLastName(registerRequest.getLastName());
         userEntity.setPhone(registerRequest.getPhone());
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
                 .email(userEntity.getEmail())
                 .address(userEntity.getAddress())
                 .phone(userEntity.getPhone())
-                .citizen_id(userEntity.getCitizen_id())
+                .citizen_id(userEntity.getCitizenId())
                 .bookings(userEntity.getBookings())
                 .roles(userEntity.getRoles())
                 .build();
@@ -143,7 +143,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setEmail(userRequest.getEmail());
         userEntity.setAddress(userRequest.getAddress());
         userEntity.setPhone(userRequest.getPhone());
-        userEntity.setCitizen_id(userRequest.getCitizen_id());
+        userEntity.setCitizenId(userRequest.getCitizen_id());
 
         return userEntity;
     }

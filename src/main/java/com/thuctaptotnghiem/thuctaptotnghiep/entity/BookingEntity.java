@@ -45,14 +45,11 @@ public class BookingEntity {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "license_plate")
-    private String licensePlate;
-
     @Column(name = "brand")
     private String brand;
 
-    @Column(name = "total_price")
-    private Long totalPrice;
+    @Column(name = "type")
+    private String type;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

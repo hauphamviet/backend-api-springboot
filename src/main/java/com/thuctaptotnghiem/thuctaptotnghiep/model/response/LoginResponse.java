@@ -14,7 +14,7 @@ public class LoginResponse {
 
     private Long id;
 
-    private String email;
+    private String citizen_id;
 
     private String token;
 
@@ -22,9 +22,9 @@ public class LoginResponse {
 
     private List<String> roles;
 
-    public LoginResponse(Long id, String email, String token, List<String> roles) {
+    public LoginResponse(Long id, String citizen_id, String token, List<String> roles) {
         this.id = id;
-        this.email = email;
+        this.citizen_id = citizen_id;
         this.token = token;
         this.roles = roles;
     }

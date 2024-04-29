@@ -44,7 +44,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getEmail(),
+                loginRequest.getCitizen_id(),
                 loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -56,7 +56,7 @@ public class AuthController {
 
         return ResponseEntity.ok(new LoginResponse(
                 userDetails.getId(),
-                userDetails.getEmail(),
+                userDetails.getCitizen_id(),
                 token,
                 roles));
 

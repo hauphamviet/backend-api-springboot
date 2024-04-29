@@ -36,17 +36,14 @@ public class BookingRequest {
 
     private String image;
 
-    @NotEmpty(message = "License plate must not be null")
-    private String licensePlate;
+    @NotEmpty(message = "Type must not be null")
+    private String type;
 
     @NotEmpty(message = "Brand must not be null")
     private String brand;
 
-    @Min(value = 0, message = "Total price must be greater than or equal to 0")
-    private long totalPrice;
-
     private long userId;
 
-    private List<BookingDetailRequest> bookingDetails;
+ //   private List<BookingDetailRequest> bookingDetails;
 
 }

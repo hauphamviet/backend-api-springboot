@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
 
     private Long id;
-    private String email;
+//    private String email;
+    private String citizen_id;
     private String password;
     private Collection<GrantedAuthority> authorities;
 
@@ -31,7 +32,7 @@ public class UserDetailsImpl implements UserDetails {
                 .collect(Collectors.toList());
         return new UserDetailsImpl(
                 userEntity.getId(),
-                userEntity.getEmail(),
+                userEntity.getCitizenId(),
                 userEntity.getPassword(),
                 authorities);
     }
@@ -47,7 +48,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return citizen_id;
     }
 
     @Override

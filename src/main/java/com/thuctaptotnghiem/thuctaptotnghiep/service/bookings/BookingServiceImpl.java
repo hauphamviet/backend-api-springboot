@@ -1,11 +1,9 @@
 package com.thuctaptotnghiem.thuctaptotnghiep.service.bookings;
 
 import com.thuctaptotnghiem.thuctaptotnghiep.common.Constants;
-import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingDetailEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.entity.BookingEntity;
 import com.thuctaptotnghiem.thuctaptotnghiep.enums.BookingStatusEnum;
 import com.thuctaptotnghiem.thuctaptotnghiep.exception.NotFoundException;
-import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingDetailRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.request.BookingRequest;
 import com.thuctaptotnghiem.thuctaptotnghiep.model.response.BookingResponse;
 import com.thuctaptotnghiem.thuctaptotnghiep.repository.BookingDetailRepository;
@@ -56,10 +54,8 @@ public class BookingServiceImpl implements BookingService {
                 .color(bookingEntity.getColor())
                 .status(bookingEntity.getStatus())
                 .image(bookingEntity.getImage())
-                .licensePlate(bookingEntity.getLicensePlate())
                 .brand(bookingEntity.getBrand())
-                .totalPrice(bookingEntity.getTotalPrice())
-                .bookingDetails(bookingEntity.getBookingDetails())
+                .type(bookingEntity.getType())
                 .users(bookingEntity.getUsers())
                 .histories(bookingEntity.getHistoryEntities())
                 .build();
@@ -117,8 +113,8 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setBookingTime(bookingRequest.getBookingTime());
         bookingEntity.setLocation(bookingRequest.getLocation());
         bookingEntity.setColor(bookingRequest.getColor());
-        bookingEntity.setLicensePlate(bookingRequest.getLicensePlate());
         bookingEntity.setBrand(bookingRequest.getBrand());
+        bookingEntity.setType(bookingRequest.getType());
         bookingEntity.setStatus(bookingRequest.getStatus());
 
         String originalFilename = file.getOriginalFilename();
@@ -130,21 +126,21 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new NotFoundException(Constants.USER_ID_NOT_EXIST));
         bookingEntity.setUsers(userEntity);
 
-        long totalPrice = 0;
-        List<BookingDetailRequest> bookingDetails = bookingRequest.getBookingDetails();
-        if (bookingDetails != null) {
-            for (BookingDetailRequest rq : bookingDetails) {
-                var bookingDetail = new BookingDetailEntity();
-                bookingDetail.setQuantity(rq.getQuantity());
-                bookingDetail.setPrice(350);
-                bookingDetail.setSubTotal(rq.getPrice() * rq.getQuantity());
-                bookingDetail.setBooking(bookingEntity);
-                totalPrice += bookingDetail.getSubTotal();
-                bookingDetailRepository.save(bookingDetail);
-            }
-        }
+//        long totalPrice = 0;
+//        List<BookingDetailRequest> bookingDetails = bookingRequest.getBookingDetails();
+//        if (bookingDetails != null) {
+//            for (BookingDetailRequest rq : bookingDetails) {
+//                var bookingDetail = new BookingDetailEntity();
+//                bookingDetail.setQuantity(rq.getQuantity());
+//                bookingDetail.setPrice(350);
+//                bookingDetail.setSubTotal(rq.getPrice() * rq.getQuantity());
+//                bookingDetail.setBooking(bookingEntity);
+//                totalPrice += bookingDetail.getSubTotal();
+//                bookingDetailRepository.save(bookingDetail);
+//            }
+//        }
 
-        bookingEntity.setTotalPrice(totalPrice);
+//        bookingEntity.setTotalPrice(totalPrice);
         bookingEntity.setUsers(userEntity);
 
         return bookingEntity;
@@ -161,32 +157,29 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setLocation(bookingRequest.getLocation());
         bookingEntity.setColor(bookingRequest.getColor());
         bookingEntity.setStatus(BookingStatusEnum.Pending);
-        bookingEntity.setLicensePlate(bookingRequest.getLicensePlate());
         bookingEntity.setBrand(bookingRequest.getBrand());
+        bookingEntity.setType(bookingRequest.getType());
 
         String originalFilename = file.getOriginalFilename();
         Path fileNameAndPath = Paths.get(UPLOAD_DIR, originalFilename);
         Files.write(fileNameAndPath, file.getBytes());
         bookingEntity.setImage(originalFilename);
 
-        bookingRepository.save(bookingEntity);
-
-        long totalPrice = 0;
-        List<BookingDetailRequest> bookingDetails = bookingRequest.getBookingDetails();
-        if (bookingDetails != null) {
-            for (BookingDetailRequest rq : bookingDetails) {
-                var bookingDetail = new BookingDetailEntity();
-                bookingDetail.setQuantity(rq.getQuantity());
-                bookingDetail.setPrice(350);
-                bookingDetail.setSubTotal(rq.getPrice() * rq.getQuantity());
-                bookingDetail.setBooking(bookingEntity);
-                totalPrice += bookingDetail.getSubTotal();
-                bookingDetailRepository.save(bookingDetail);
-            }
-        }
-
-        bookingEntity.setTotalPrice(totalPrice);
+//        long totalPrice = 0;
+//        List<BookingDetailRequest> bookingDetails = bookingRequest.getBookingDetails();
+//        if (bookingDetails != null) {
+//            for (BookingDetailRequest rq : bookingDetails) {
+//                var bookingDetail = new BookingDetailEntity();
+//                bookingDetail.setQuantity(rq.getQuantity());
+//                bookingDetail.setPrice(350);
+//                bookingDetail.setSubTotal(rq.getPrice() * rq.getQuantity());
+//                bookingDetail.setBooking(bookingEntity);
+//                totalPrice += bookingDetail.getSubTotal();
+//                bookingDetailRepository.save(bookingDetail);
+//            }
+//        }
         bookingEntity.setUsers(userEntity);
+
         bookingRepository.save(bookingEntity);
 
     }

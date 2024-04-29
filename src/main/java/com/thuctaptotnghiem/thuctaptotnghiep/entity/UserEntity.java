@@ -46,8 +46,9 @@ public class UserEntity {
     private String phone;
 
     @Column(name = "citizen_id", length = 20, unique = true)
-    private String citizen_id;
+    private String citizenId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<BookingEntity> bookings;
 

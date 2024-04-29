@@ -33,17 +33,14 @@ public class BookingResponse {
 
     private String image;
 
-    private String licensePlate;
-
     private String brand;
 
-    private long totalPrice;
+    private String type;
 
-    @JsonIgnore
     private UserEntity users;
 
     private Set<HistoryEntity> histories;
 
-    private Set<BookingDetailEntity> bookingDetails;
+//    private Set<BookingDetailEntity> bookingDetails;
 
 }
